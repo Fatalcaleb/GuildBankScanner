@@ -1,10 +1,11 @@
-## Interface: 90400
+## Interface: 11400
 ## Title: Guild Bank Scanner
-## Notes: Scans the guild bank and posts data to a Discord server
+## Notes: Scans the guild bank and posts the contents to Discord.
 ## Author: Fatalcaleb
-## Version: 1.0
-## SavedVariables: GuildBankScannerDB
+## Version: 1.0.0
+## SavedVariables: GuildBankScannerSaved
+## OptionalDeps: LibStub
 
 Libs\LibJSON-1.0\LibJSON-1.0.lua
-GuildBankScanner.lua
 GuildBankScanner.xml
+GuildBankScanner.lua
