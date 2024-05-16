@@ -62,7 +62,9 @@ function SendWebhookMessage(webhookURL, message)
     local jsonData = {
         ["content"] = message
     }
+    print("Debug: jsonData = " .. tostring(jsonData))
     local jsonDataString = JSON:Encode(jsonData)
+    print("Debug: jsonDataString = " .. jsonDataString)
 
     local body = {
         method = "POST",
@@ -75,6 +77,7 @@ function SendWebhookMessage(webhookURL, message)
 
     C_HttpRequest:SendRequest(body)
 end
+
 
 -- Slash command to set the webhook URL
 SLASH_GUILDBANKSCANNER1 = "/gbs"
