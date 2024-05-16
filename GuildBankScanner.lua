@@ -1,0 +1,63 @@
+-- GuildBankScanner.lua
+local GuildBankScanner = CreateFrame("Frame")
+GuildBankScanner:RegisterEvent("ADDON_LOADED")
+GuildBankScanner:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
+GuildBankScanner:RegisterEvent("GUILDBANKFRAME_OPENED")
+
+local function sendToDiscord(webhookURL, message)
+    local json = string.format('{"content": "%s"}', message)
+    local request = C_LFGList.HttpRequest
+    request("POST", webhookURL, json, nil, nil)
+end
+
+local function scanGuildBank()
+    if not IsInGuild() then
+        print("You are not in a guild.")
+        return
+    end
+
+    local items = {}
+    for tab = 1, GetNumGuildBankTabs() do
+        for slot = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
+            local itemLink = GetGuildBankItemLink(tab, slot)
+            if itemLink then
+                table.insert(items, itemLink)
+            end
+        end
+    end
+
+    local message = "Guild Bank Contents:\n" .. table.concat(items, "\n")
+    if GuildBankScannerDB and GuildBankScannerDB.webhookURL then
+        sendToDiscord(GuildBankScannerDB.webhookURL, message)
+    else
+        print("Discord webhook URL is not set. Use /gbs setwebhook <url> to set it.")
+    end
+end
+
+local function handleCommand(msg)
+    local cmd, rest = msg:match("^(%S*)%s*(.-)$")
+    if cmd == "scan" then
+        scanGuildBank()
+    elseif cmd == "setwebhook" then
+        if rest and rest ~= "" then
+            GuildBankScannerDB.webhookURL = rest
+            print("Discord webhook URL set to: " .. rest)
+        else
+            print("Usage: /gbs setwebhook <url>")
+        end
+    else
+        print("Usage: /gbs scan | /gbs setwebhook <url>")
+    end
+end
+
+GuildBankScanner:SetScript("OnEvent", function(self, event, ...)
+    if event == "ADDON_LOADED" and ... == "GuildBankScanner" then
+        if not GuildBankScannerDB then
+            GuildBankScannerDB = {}
+        end
+        SLASH_GUILDBANKSCANNER1 = "/gbs"
+        SlashCmdList["GUILDBANKSCANNER"] = handleCommand
+    elseif event == "GUILDBANKFRAME_OPENED" then
+        scanGuildBank()
+    end
+end)
