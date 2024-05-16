@@ -9,7 +9,7 @@ A World of Warcraft addon that scans the guild bank and posts data to a specifie
 
 ## Installation
 1. Download the addon.
-2. Extract the `GuildBankScanner` folder into your `World of Warcraft/_retail_/Interface/AddOns/` directory.
+2. Extract the `GuildBankScanner` folder into your `World of Warcraft/(wow version)/Interface/AddOns/` directory.
 3. Restart World of Warcraft.
 4. Enable the `Guild Bank Scanner` addon in the AddOns menu.
 
