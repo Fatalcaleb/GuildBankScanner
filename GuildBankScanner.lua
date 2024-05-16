@@ -1,5 +1,9 @@
 local addonName, addonTable = ...
 
+-- Initialize saved variables
+GuildBankScannerSaved = GuildBankScannerSaved or {}
+GuildBankScannerSaved.webhookURL = GuildBankScannerSaved.webhookURL or ""
+
 -- Event handler frame
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("GUILDBANKFRAME_OPENED")
@@ -29,9 +33,13 @@ end
 
 -- Function to post data to Discord
 function PostToDiscord(guildBankData)
-    local webhookURL = "YOUR_DISCORD_WEBHOOK_URL"
-    local message = "Guild Bank Contents:\n"
+    local webhookURL = GuildBankScannerSaved.webhookURL
+    if webhookURL == "" then
+        print("No webhook URL set. Use /gbs webhook <URL> to set it.")
+        return
+    end
 
+    local message = "Guild Bank Contents:\n"
     for _, item in ipairs(guildBankData) do
         message = message .. item.itemLink .. " x" .. item.itemCount .. "\n"
     end
@@ -56,4 +64,16 @@ function SendWebhookMessage(webhookURL, message)
     }
 
     C_HttpRequest:SendRequest(body)
+end
+
+-- Slash command to set the webhook URL
+SLASH_GUILDBANKSCANNER1 = "/gbs"
+SlashCmdList["GUILDBANKSCANNER"] = function(msg)
+    local command, rest = msg:match("^(%S*)%s*(.-)$")
+    if command == "webhook" and rest ~= "" then
+        GuildBankScannerSaved.webhookURL = rest
+        print("Guild Bank Scanner: Webhook URL set to " .. rest)
+    else
+        print("Usage: /gbs webhook <URL>")
+    end
 end
