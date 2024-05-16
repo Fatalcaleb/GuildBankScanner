@@ -4,8 +4,8 @@ local addonName, addonTable = ...
 GuildBankScannerSaved = GuildBankScannerSaved or {}
 GuildBankScannerSaved.webhookURL = GuildBankScannerSaved.webhookURL or ""
 
--- Load the JSON library
-local JSON = LibStub:GetLibrary("LibJSON-1.0")
+-- Load the JSON library using LibStub
+local JSON = LibStub("LibJSON-1.0")
 
 -- Event handler frame
 local frame = CreateFrame("Frame")
