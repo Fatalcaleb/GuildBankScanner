@@ -4,8 +4,12 @@
 ## Author: Fatalcaleb
 ## Version: 1.0.0
 ## SavedVariables: GuildBankScannerSaved
-## OptionalDeps: LibStub
+## Dependencies: LibStub, AceComm-3.0, AceSerializer-3.0, CallbackHandler-1.0
 
+Libs\LibStub\LibStub.lua
+Libs\AceComm-3.0\AceComm-3.0.lua
+Libs\AceSerializer-3.0\AceSerializer-3.0.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibJSON-1.0\LibJSON-1.0.lua
 GuildBankScanner.xml
 GuildBankScanner.lua
