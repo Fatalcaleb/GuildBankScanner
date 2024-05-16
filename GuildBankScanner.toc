@@ -6,3 +6,4 @@
 ## SavedVariables: GuildBankScannerDB
 
 GuildBankScanner.lua
+GuildBankScanner.xml
