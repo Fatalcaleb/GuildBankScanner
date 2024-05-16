@@ -4,15 +4,25 @@ local addonName, addonTable = ...
 GuildBankScannerSaved = GuildBankScannerSaved or {}
 GuildBankScannerSaved.webhookURL = GuildBankScannerSaved.webhookURL or ""
 
+-- Load the JSON library
+local JSON = LibStub:GetLibrary("LibJSON-1.0")
+
 -- Event handler frame
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("GUILDBANKFRAME_OPENED")
 frame:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
-frame:SetScript("OnEvent", function(self, event, ...)
+frame:RegisterEvent("ADDON_LOADED")
+frame:SetScript("OnEvent", function(self, event, addonName)
     if event == "GUILDBANKFRAME_OPENED" then
         ScanGuildBank()
     elseif event == "GUILDBANKBAGSLOTS_CHANGED" then
         ScanGuildBank()
+    elseif event == "ADDON_LOADED" and addonName == "GuildBankScanner" then
+        if GuildBankScannerSaved.webhookURL == "" then
+            print("Guild Bank Scanner: No webhook URL set. Use /gbs webhook <URL> to set it.")
+        else
+            print("Guild Bank Scanner: Loaded webhook URL.")
+        end
     end
 end)
 
@@ -35,7 +45,7 @@ end
 function PostToDiscord(guildBankData)
     local webhookURL = GuildBankScannerSaved.webhookURL
     if webhookURL == "" then
-        print("No webhook URL set. Use /gbs webhook <URL> to set it.")
+        print("Guild Bank Scanner: No webhook URL set. Use /gbs webhook <URL> to set it.")
         return
     end
 
@@ -52,7 +62,7 @@ function SendWebhookMessage(webhookURL, message)
     local jsonData = {
         ["content"] = message
     }
-    local jsonDataString = JSON:encode(jsonData)
+    local jsonDataString = JSON:Encode(jsonData)
 
     local body = {
         method = "POST",
