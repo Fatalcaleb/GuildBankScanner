@@ -1,7 +1,7 @@
 ## Interface: 90400
 ## Title: Guild Bank Scanner
 ## Notes: Scans the guild bank and posts data to a Discord server
-## Author: YourName
+## Author: Fatalcaleb
 ## Version: 1.0
 ## SavedVariables: GuildBankScannerDB
 
