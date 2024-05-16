@@ -1,3 +1,4 @@
+local addonName, addonTable = ...
 -- GuildBankScanner.lua
 local GuildBankScanner = CreateFrame("Frame")
 GuildBankScanner:RegisterEvent("ADDON_LOADED")
